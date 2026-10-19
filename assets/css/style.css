@@ -76,6 +76,8 @@ header p {
   margin: 0 auto;
 }
 
+/* Card Styling */
+.card,
 .command-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -85,12 +87,14 @@ header p {
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+.card:hover,
 .command-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.25);
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.3), 0 0 15px rgba(56, 189, 248, 0.15);
 }
 
 .card-header {
@@ -100,16 +104,46 @@ header p {
   margin-bottom: 0.75rem;
 }
 
-.tool-tag {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 0.2rem 0.5rem;
+/* Tool-specific badge styling for category tags */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
   border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.tool-tag {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
   background-color: rgba(56, 189, 248, 0.1);
   color: var(--accent-color);
   border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.tag-git {
+  background: rgba(240, 80, 50, 0.15);
+  color: #f05032;
+  border: 1px solid rgba(240, 80, 50, 0.3);
+}
+
+.tag-docker {
+  background: rgba(36, 150, 237, 0.15);
+  color: #2496ed;
+  border: 1px solid rgba(36, 150, 237, 0.3);
+}
+
+.tag-kubernetes {
+  background: rgba(50, 108, 229, 0.15);
+  color: #326ce5;
+  border: 1px solid rgba(50, 108, 229, 0.3);
 }
 
 .card-title {
@@ -157,10 +191,24 @@ header p {
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.2s, background-color 0.2s;
+  transition: opacity 0.2s, background-color 0.2s, color 0.2s;
   flex-shrink: 0;
 }
 
 .copy-btn:hover {
   opacity: 0.9;
+}
+
+.copy-btn.copied {
+  background-color: #22c55e;
+  color: #020617;
+}
+
+/* Empty State */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  padding: 3rem 1rem;
 }
