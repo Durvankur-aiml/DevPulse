@@ -1,174 +1,230 @@
 const commands = [
+  // --- LINUX COMMANDS ---
+  {
+    tool: "Linux",
+    name: "System Resource Monitor",
+    cmd: "htop",
+    desc: "Interactive real-time process viewer and system resource manager.",
+    tagClass: "tag-linux"
+  },
+  {
+    tool: "Linux",
+    name: "Check Listening Ports",
+    cmd: "sudo ss -tulpn | grep LISTEN",
+    desc: "Inspect active TCP/UDP listening sockets with process IDs.",
+    tagClass: "tag-linux"
+  },
+  {
+    tool: "Linux",
+    name: "Disk Space Usage",
+    cmd: "df -h --total",
+    desc: "Show human-readable filesystem disk space usage summary.",
+    tagClass: "tag-linux"
+  },
+  {
+    tool: "Linux",
+    name: "Follow System Logs",
+    cmd: "journalctl -u nginx.service -f -n 50",
+    desc: "Stream the last 50 log lines for a specific systemd service.",
+    tagClass: "tag-linux"
+  },
+
+  // --- GIT COMMANDS ---
   {
     tool: "Git",
-    name: "Clone Repository",
-    cmd: "git clone <repo-url>",
-    desc: "Clone a remote repository to your local machine."
+    name: "Formatted Commit History",
+    cmd: "git log --oneline --graph --decorate --all",
+    desc: "Display compact visual branching tree across all branches.",
+    tagClass: "tag-git"
   },
   {
     tool: "Git",
-    name: "Check Status",
-    cmd: "git status -s",
-    desc: "Display modified, staged, and untracked files in a short format."
+    name: "Stash Uncommitted Changes",
+    cmd: "git stash push -m 'wip-feature-save'",
+    desc: "Temporarily shelter uncommitted tracked and untracked work.",
+    tagClass: "tag-git"
   },
   {
     tool: "Git",
-    name: "Switch Branch",
-    cmd: "git switch -c <branch-name>",
-    desc: "Create and immediately switch to a new local branch."
+    name: "Undo Last Commit (Keep Files)",
+    cmd: "git reset --soft HEAD~1",
+    desc: "Rewinds the latest commit while preserving staged changes.",
+    tagClass: "tag-git"
+  },
+  {
+    tool: "Git",
+    name: "Clean Untracked Files",
+    cmd: "git clean -fd",
+    desc: "Forcefully remove untracked directories and files from tree.",
+    tagClass: "tag-git"
+  },
+
+  // --- DOCKER COMMANDS ---
+  {
+    tool: "Docker",
+    name: "Run Container Detached",
+    cmd: "docker run -d --name web-app -p 8080:80 --restart unless-stopped nginx:alpine",
+    desc: "Run background container mapped to port 8080 with auto-restart.",
+    tagClass: "tag-docker"
   },
   {
     tool: "Docker",
-    name: "Run Container",
-    cmd: "docker run -d -p 80:80 nginx",
-    desc: "Run an Nginx web server container in detached mode mapped to port 80."
+    name: "Stream Container Logs",
+    cmd: "docker logs -f --tail 100 <container-id>",
+    desc: "Follow the live standard output and errors of a container.",
+    tagClass: "tag-docker"
   },
   {
     tool: "Docker",
-    name: "List Running Containers",
-    cmd: "docker ps",
-    desc: "List all currently running Docker containers on the host system."
+    name: "Interactive Container Shell",
+    cmd: "docker exec -it <container-id> /bin/sh",
+    desc: "Attach an interactive TTY shell session inside a running container.",
+    tagClass: "tag-docker"
   },
   {
     tool: "Docker",
-    name: "Stop Container",
-    cmd: "docker stop <container-id>",
-    desc: "Gracefully stop one or more running Docker containers."
+    name: "Purge Dangling Resources",
+    cmd: "docker system prune -af --volumes",
+    desc: "Remove all stopped containers, unused networks, and dangling volumes.",
+    tagClass: "tag-docker"
+  },
+
+  // --- KUBERNETES COMMANDS ---
+  {
+    tool: "Kubernetes",
+    name: "List All Namespace Pods",
+    cmd: "kubectl get pods -A -o wide",
+    desc: "Retrieve all running pods across clusters with assigned node IPs.",
+    tagClass: "tag-kubernetes"
   },
   {
     tool: "Kubernetes",
-    name: "Get Pods",
-    cmd: "kubectl get pods -A",
-    desc: "List all Kubernetes pods across all namespaces."
+    name: "Describe Problematic Pod",
+    cmd: "kubectl describe pod <pod-name> -n default",
+    desc: "Show detailed status events and lifecycle errors for debugging.",
+    tagClass: "tag-kubernetes"
   },
   {
     tool: "Kubernetes",
-    name: "Stream Pod Logs",
-    cmd: "kubectl logs -f <pod-name>",
-    desc: "Stream and tail real-time log output from a specified pod."
+    name: "Stream Deployment Logs",
+    cmd: "kubectl logs -f deployment/<deploy-name> --all-containers=true",
+    desc: "Stream real-time stdout across all pods in a deployment.",
+    tagClass: "tag-kubernetes"
   },
   {
     tool: "Kubernetes",
-    name: "Describe Resource",
-    cmd: "kubectl describe pod <pod-name>",
-    desc: "Display detailed state, events, and diagnostics of a pod."
+    name: "Rollout Status & History",
+    cmd: "kubectl rollout status deployment/<deploy-name>",
+    desc: "Monitor status of rolling update deployment progression.",
+    tagClass: "tag-kubernetes"
   }
 ];
 
-function copyCommand(text, buttonElement) {
-  const applySuccessState = () => {
-    buttonElement.textContent = "Copied! ✔";
-    buttonElement.classList.add("copied");
-    buttonElement.style.backgroundColor = "#22c55e";
-    buttonElement.style.color = "#020617";
-
-    setTimeout(() => {
-      buttonElement.textContent = "Copy";
-      buttonElement.classList.remove("copied");
-      buttonElement.style.backgroundColor = "";
-      buttonElement.style.color = "";
-    }, 1500);
-  };
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        applySuccessState();
-      })
-      .catch(() => {
-        fallbackCopy(text, applySuccessState);
-      });
-  } else {
-    fallbackCopy(text, applySuccessState);
-  }
-}
-
-function fallbackCopy(text, onSuccess) {
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand("copy");
-    onSuccess();
-  } catch (err) {
-    console.error("Failed to copy command using fallback: ", err);
-  } finally {
-    document.body.removeChild(textarea);
-  }
-}
+const container = document.getElementById("commandContainer");
+const searchInput = document.getElementById("searchInput");
+const filterChips = document.querySelectorAll(".filter-chip");
+let activeCategory = "all";
 
 function renderCards(list) {
-  const container = document.getElementById("commandContainer");
   if (!container) return;
-
   container.innerHTML = "";
-
   if (!list || list.length === 0) {
-    const noResults = document.createElement("div");
-    noResults.className = "no-results";
-    noResults.style.gridColumn = "1 / -1";
-    noResults.style.textAlign = "center";
-    noResults.style.color = "var(--text-muted, #94a3b8)";
-    noResults.style.padding = "3rem 1rem";
-    noResults.style.fontSize = "1.2rem";
-    noResults.textContent = "No matching commands found";
-    container.appendChild(noResults);
+    container.innerHTML = `
+      <div class="no-results">
+        <p>No matching commands found.</p>
+        <small>Try querying terms like 'htop', 'prune', 'stash', or 'rollout'</small>
+      </div>`;
     return;
   }
 
-  list.forEach((item) => {
-    const card = document.createElement("div");
-    card.className = "command-card";
-
+  list.forEach((item, index) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const formattedId = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`;
     card.innerHTML = `
       <div class="card-header">
-        <span class="tool-tag">${item.tool}</span>
+        <span class="tag ${item.tagClass}">${item.tool}</span>
+        <span class="cmd-id">#${formattedId}</span>
       </div>
       <h3 class="card-title">${item.name}</h3>
       <p class="card-desc">${item.desc}</p>
       <div class="code-box">
-        <code>${item.cmd}</code>
-        <button class="copy-btn" type="button">Copy</button>
+        <span class="terminal-prefix">$</span>
+        <code id="cmd-${index}">${item.cmd}</code>
+        <button class="copy-btn" onclick="copySnippet('cmd-${index}', this)" title="Copy syntax" aria-label="Copy syntax">
+          <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="btn-text">Copy</span>
+        </button>
       </div>
     `;
-
-    const copyBtn = card.querySelector(".copy-btn");
-    if (copyBtn) {
-      copyBtn.addEventListener("click", () => {
-        copyCommand(item.cmd, copyBtn);
-      });
-    }
-
     container.appendChild(card);
   });
 }
 
-function initApp() {
-  const searchInput = document.getElementById("searchInput");
+function copySnippet(elementId, btn) {
+  const codeElement = document.getElementById(elementId);
+  if (!codeElement) return;
+  const text = codeElement.innerText;
 
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      const filtered = commands.filter((item) => {
-        return (
-          item.name.toLowerCase().includes(query) ||
-          item.tool.toLowerCase().includes(query) ||
-          item.cmd.toLowerCase().includes(query)
-        );
-      });
-      renderCards(filtered);
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add("copied");
+    const btnText = btn.querySelector(".btn-text");
+    if (btnText) btnText.innerText = "Copied";
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      if (btnText) btnText.innerText = "Copy";
+    }, 1500);
+  }).catch(() => {
+    // Fallback for non-https or older browser permissions
+    const tempInput = document.createElement("input");
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    btn.classList.add("copied");
+    const btnText = btn.querySelector(".btn-text");
+    if (btnText) btnText.innerText = "Copied";
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      if (btnText) btnText.innerText = "Copy";
+    }, 1500);
+  });
+}
+
+window.copySnippet = copySnippet;
+
+function filterDataset() {
+  if (!searchInput) return;
+  const query = searchInput.value.trim().toLowerCase();
+  const filtered = commands.filter(c => {
+    const matchesCategory = (activeCategory === "all") || (c.tool.toLowerCase() === activeCategory);
+    const matchesSearch = c.name.toLowerCase().includes(query) ||
+                          c.tool.toLowerCase().includes(query) ||
+                          c.cmd.toLowerCase().includes(query) ||
+                          c.desc.toLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
+  renderCards(filtered);
+}
+
+if (searchInput) {
+  searchInput.addEventListener("input", filterDataset);
+}
+
+if (filterChips) {
+  filterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      filterChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeCategory = chip.getAttribute("data-category");
+      filterDataset();
     });
-  }
-
-  renderCards(commands);
+  });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initApp);
-} else {
-  initApp();
-}
+// Initial Render
+renderCards(commands);

@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevPulse - DevOps Command Palette</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevPulse // Systems & DevOps Palette</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>DevPulse 🚀</h1>
-        <p>DevOps & Cloud Command Quick Reference</p>
+  <div class="page-wrapper">
+    <header class="navbar">
+      <div class="brand">
+        <span class="brand-symbol">⚡</span>
+        <div class="brand-text">
+          <span class="brand-title">DevPulse</span>
+          <span class="brand-sub">Ops Cheatsheet & Quick Reference</span>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="env-badge"><span class="dot"></span> v1.2.0-stable</span>
+      </div>
     </header>
 
-    <main>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search commands (e.g., docker, git, kubectl)...">
+    <main class="main-content">
+      <section class="search-panel">
+        <div class="search-box-wrapper">
+          <svg class="search-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Filter commands by syntax, service, or flag (e.g. ss, prune, stash, pods)..." autocomplete="off" spellcheck="false" />
         </div>
 
-        <section id="commandContainer">
-            <!-- Command cards will be rendered dynamically -->
-        </section>
+        <div class="category-filters">
+          <button class="filter-chip active" data-category="all">All Specs</button>
+          <button class="filter-chip" data-category="linux">Linux Core</button>
+          <button class="filter-chip" data-category="git">Git VCS</button>
+          <button class="filter-chip" data-category="docker">Docker Engine</button>
+          <button class="filter-chip" data-category="kubernetes">Kubernetes (k8s)</button>
+        </div>
+      </section>
+
+      <section id="commandContainer" class="cards-grid">
+        <!-- Rendered dynamically -->
+      </section>
     </main>
 
-    <script src="assets/js/app.js"></script>
+    <footer class="site-footer">
+      <p>DevPulse Engineering Palette &bull; DevOps & Kubernetes ISE-2 &bull; DYPCOET</p>
+    </footer>
+  </div>
+
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
